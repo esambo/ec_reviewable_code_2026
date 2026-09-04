@@ -53,7 +53,8 @@ defmodule WordlWeb.GuessBoard do
     current_row = current_tiles(current)
     empties = max_rows - length(colored) - if(current_row, do: 1, else: 0)
 
-    rows = colored ++ List.wrap(current_row) ++ List.duplicate(empty_row(), max(empties, 0))
+    draft_rows = if current_row, do: [current_row], else: []
+    rows = colored ++ draft_rows ++ List.duplicate(empty_row(), max(empties, 0))
     Enum.take(rows, max_rows)
   end
 

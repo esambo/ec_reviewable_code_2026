@@ -1,7 +1,7 @@
 defmodule Wordl.Dictionary do
   @moduledoc """
-  Five-letter Wordl vocabulary. Secret words are chosen from `@secrets`;
-  any word in `@guesses` is a valid player suggestion.
+  Five-letter Wordl vocabulary. Secret words are chosen from `@secrets`.
+  Any five-letter alphabetic word is a valid player guess.
   """
 
   @secrets ~w(
@@ -48,16 +48,10 @@ defmodule Wordl.Dictionary do
     would wound write wrong wrote young youth
   )
 
-  @extra_guesses ~w(
-    adieu arose audio crane crate slate stale stare teary tripe soare roate
-  )
-
-  @guesses MapSet.new(@secrets ++ @extra_guesses)
-
   def secrets, do: @secrets
 
   def valid_guess?(word) when is_binary(word) do
-    MapSet.member?(@guesses, String.downcase(word))
+    String.match?(String.downcase(word), ~r/^[a-z]{5}$/)
   end
 
   def random_secret(exclude \\ []) do

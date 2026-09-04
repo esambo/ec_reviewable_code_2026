@@ -15,16 +15,17 @@ defmodule Wordl.GamesTest do
     {:ok, puzzle} = Games.generate_puzzle()
     {:ok, play} = Games.start_play(puzzle, "Ada")
 
-    assert {:error, :not_in_dictionary} = Games.submit_guess(play, "zzzzz")
+    assert {:error, :not_in_dictionary} = Games.submit_guess(play, "hell0")
+    {:ok, play} = Games.submit_guess(play, "hello")
 
     miss = Enum.find(Dictionary.secrets(), &(&1 != puzzle.secret))
     {:ok, play} = Games.submit_guess(play, miss)
     assert play.status == "playing"
-    assert play.guesses == [miss]
+    assert play.guesses == ["hello", miss]
 
     {:ok, won} = Games.submit_guess(play, puzzle.secret)
     assert won.status == "won"
-    assert Play.score(won) == 2
+    assert Play.score(won) == 3
   end
 
   test "start_play reuses an existing board for the same name" do
